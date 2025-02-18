@@ -90,7 +90,7 @@ const UserManagement = () => {
       );
       setError("");
       setOpen(true);
-      window.location.reload();
+      fetchUsers();
     } catch (err) {
       console.log(err);
       setError(err?.response?.data?.message || "Something went wrong!");
