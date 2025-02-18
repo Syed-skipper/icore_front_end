@@ -14,6 +14,7 @@ import TextField from "@mui/material/TextField";
 import { Edit, Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import "./User.css";
+import config from "../../config.json";
 
 const style = {
   position: "absolute",
@@ -49,7 +50,7 @@ const UserManagement = () => {
     const token = localStorage.getItem("token");
     console.log(token);
     try {
-      const response = await axios.get("https://icore-back-end.onrender.com/api/users", {
+      const response = await axios.get(`${config.local_url}users`, {
         headers: { "access-token": token },
       });
       setUsers(response.data);
@@ -78,7 +79,7 @@ const UserManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://icore-back-end.onrender.com/api/files/upload-users",
+        `${config.local_url}users/files/upload-users`,
         formData,
         {
           headers: {
@@ -105,7 +106,7 @@ const UserManagement = () => {
   const handleDelete = async (user) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://icore-back-end.onrender.com/api/users/${user._id}`, {
+      await axios.delete(`${config.local_url}users/${user._id}`, {
         headers: { "access-token": token },
       });
       fetchUsers();
@@ -131,6 +132,12 @@ const UserManagement = () => {
         (field) => !selectedUser[field]?.trim()
       );
 
+      if (selectedUser.mobile.length !== 10) {
+        setError(`Mobile no should be in 10 digits`);
+        setOpen(true);
+        return;
+      }
+
       if (missingFields.length > 0) {
         setError(`${missingFields.join(", ")} is missing;`);
         setOpen(true);
@@ -138,7 +145,7 @@ const UserManagement = () => {
       }
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://icore-back-end.onrender.com/api/users/${selectedUser._id}`,
+        `${config.local_url}users/${selectedUser._id}`,
         selectedUser,
         {
           headers: { "access-token": token },
@@ -149,7 +156,7 @@ const UserManagement = () => {
       );
       handleClose();
     } catch (err) {
-      setError("Failed to update user");
+      setError(err?.response?.data?.message || "Failed to update user");
       setOpen(true);
     }
   };
@@ -165,7 +172,7 @@ const UserManagement = () => {
   const handleExport = async () => {
     try {
       const response = await axios.get(
-        "https://icore-back-end.onrender.com/api/files/export-users",
+        `${config.local_url}/files/export-users`,
         {
           headers: {
             "access-token": localStorage.getItem("token"),

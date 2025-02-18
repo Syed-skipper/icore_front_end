@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import config from "../../config.json";
+
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -17,7 +19,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        "https://icore-back-end.onrender.com/api/auth/login",
+        `${config.local_url}auth/login`,
         {
           email,
           password,
@@ -46,7 +48,7 @@ const LoginPage = () => {
     }
 
     try {
-      await axios.post("https://icore-back-end.onrender.com/api/auth/register", {
+      await axios.post(`${config.local_url}auth/register`, {
         email,
         password,
       });
