@@ -79,7 +79,7 @@ const UserManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `${config.local_url}users/files/upload-users`,
+        `${config.local_url}files/upload-users`,
         formData,
         {
           headers: {
@@ -172,7 +172,7 @@ const UserManagement = () => {
   const handleExport = async () => {
     try {
       const response = await axios.get(
-        `${config.local_url}/files/export-users`,
+        `${config.local_url}files/export-users`,
         {
           headers: {
             "access-token": localStorage.getItem("token"),
